@@ -62,9 +62,6 @@ public class Utils{
             public void run(){
                 String day = getDay();
                 if(day.equals("Monday") || day.equals("Wednesday") || day.equals("Saturday")){
-                    reloadShop();
-                    String msg = "&l&eNEW &fCửa hàng mùa vụ đã được làm mới!";
-                    Server.getInstance().broadcastMessage(TextFormat.colorize(msg));
                     if(day.equals("Monday")){
                         String season = SeasonAPI.getNowSeason().getNextSeason().getName();
                         Loader.getInstance().getConfig().set("season.name", season.toLowerCase());
@@ -73,7 +70,10 @@ public class Utils{
                         Loader.getInstance().loadSeason();
                         String msg2 = "&l&eNEW &fĐã chuyển sang mùa &6" + season;
                         Server.getInstance().broadcastMessage(TextFormat.colorize(msg2));
-                    }
+                    }                    
+                    reloadShop();
+                    String msg = "&l&eNEW &fCửa hàng mùa vụ đã được làm mới!";
+                    Server.getInstance().broadcastMessage(TextFormat.colorize(msg));
                 }
             }
         }.runTaskTimer(Loader.getInstance(), 0, 20 * 60 * 60 * 20);
