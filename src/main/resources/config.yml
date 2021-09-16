@@ -1,0 +1,19 @@
+shop:
+  spring:
+    # Id:beta: Giá đầu mùa trong khoảng từ|đến : Giá cuối mùa trong khoảng từ|đến
+    - "id:meta:daumua:giuamua:cuoimua"
+  summer:
+    # Id:beta: Giá đầu mùa trong khoảng từ|đến : Giá cuối mùa trong khoảng từ|đến
+    - "id:meta:daumua:giuamua:cuoimua"
+  fall:
+    # Id:beta: Giá đầu mùa trong khoảng từ|đến : Giá cuối mùa trong khoảng từ|đến
+    - "id:meta:daumua:giuamua:cuoimua"
+  winter:
+    # Id:beta: Giá đầu mùa trong khoảng từ|đến : Giá cuối mùa trong khoảng từ|đến
+    - "id:meta:daumua:giuamua:cuoimua"
+    
+oscillation: 10 # giá mặc định + 1-10
+
+season:
+  name: spring
+  shop: []
