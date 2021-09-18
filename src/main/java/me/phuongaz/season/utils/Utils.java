@@ -1,12 +1,16 @@
 package me.phuongaz.season.utils;
 
 import java.text.SimpleDateFormat;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Random;
 
+import cn.nukkit.Player;
 import cn.nukkit.Server;
+import cn.nukkit.item.Item;
 import cn.nukkit.scheduler.NukkitRunnable;
 import cn.nukkit.utils.Config;
 import cn.nukkit.utils.TextFormat;
@@ -26,13 +30,25 @@ public class Utils{
         return date;
     }
 
+    public static int getItemCount(Player player, Item item){
+        int count = 0;
+        for(Item it : player.getInventory().getContents().values()){
+            if(it.equalsExact(item)){
+                count += it.getCount();
+            }
+        }
+        return count;
+    }
+
     public static void reloadShop(){
         Config config = Loader.getInstance().getConfig();
         Random rd = new Random();
         int price = rd.nextInt(config.getInt("oscillation"));
-        Season season = SeasonAPI.getNowSeason().getNextSeason();
-        List<String> setupshop = config.getStringList("shop." + season.getName().toLowerCase());
+        Season season = SeasonAPI.getNowSeason();
+        List<String> setupshop = config.getStringList("shop." + season.getSeason().toLowerCase());
         List<String> seasonshop = new ArrayList<>();
+        System.out.println(setupshop);
+        System.out.println(season.getSeason());
         for(String s : setupshop){
             String[] list = s.split(":");
             int price1 = 0;
@@ -49,7 +65,9 @@ public class Utils{
             item += ":" + list[1];
             item += ":" + price1;
             seasonshop.add(item);
+            System.out.println(item);
         }
+        System.out.println(seasonshop);
         config.set("season.shop", seasonshop);
         config.save();
         config.reload();
@@ -61,10 +79,14 @@ public class Utils{
             @Override
             public void run(){
                 String day = getDay();
+                DateTimeFormatter dtf = DateTimeFormatter.ofPattern("dd");
+                LocalDateTime now = LocalDateTime.now();
+                String date = dtf.format(now);
                 if(day.equals("Monday") || day.equals("Wednesday") || day.equals("Saturday")){
-                    if(day.equals("Monday")){
+                    if(day.equals("Monday") && !date.equals(Loader.getInstance().getConfig().getString("season.date"))){
                         String season = SeasonAPI.getNowSeason().getNextSeason().getName();
                         Loader.getInstance().getConfig().set("season.name", season.toLowerCase());
+                        Loader.getInstance().getConfig().set("season.date", date);
                         Loader.getInstance().getConfig().save();
                         Loader.getInstance().reloadConfig();
                         Loader.getInstance().loadSeason();
@@ -76,6 +98,6 @@ public class Utils{
                     Server.getInstance().broadcastMessage(TextFormat.colorize(msg));
                 }
             }
-        }.runTaskTimer(Loader.getInstance(), 0, 20 * 60 * 60 * 20);
+        }.runTaskTimer(Loader.getInstance(), 0, 20 * 60 * 60 * 3);
     }
 }

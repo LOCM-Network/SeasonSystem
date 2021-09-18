@@ -22,6 +22,7 @@ public class Season {
         }
     }
 
+    @Getter
     private String season;
 
     public Season(String season){
