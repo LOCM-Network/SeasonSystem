@@ -1,5 +1,6 @@
 package me.phuongaz.season.form;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import cn.nukkit.Player;
@@ -8,6 +9,7 @@ import cn.nukkit.utils.TextFormat;
 import me.onebone.economyapi.EconomyAPI;
 import me.phuongaz.season.api.SeasonAPI;
 import me.phuongaz.season.season.Season;
+import me.phuongaz.season.utils.SeasonUtils;
 import me.phuongaz.season.utils.Utils;
 import ru.contentforge.formconstructor.form.CustomForm;
 import ru.contentforge.formconstructor.form.SimpleForm;
@@ -15,6 +17,17 @@ import ru.contentforge.formconstructor.form.element.Input;
 import ru.contentforge.formconstructor.form.element.Toggle;
 
 public class ShopForm {
+
+    public static void mainForm(Player player){
+        SimpleForm form = new SimpleForm(TextFormat.colorize("&l&0Cửa hàng"));
+        form.addButton(TextFormat.colorize("&l&f● &2Mua vật phẩm &l&f●"), (p, btn) -> {
+            sendShopForm(p);
+        });
+        form.addButton(TextFormat.colorize("&l&f● &2Thông tin mùa &l&f●"), (p, btn) -> {
+            sendSeasonBlocksForm(p);
+        });
+        form.send(player);
+    }
     
     public static void sendShopForm(Player player){
         Season season = SeasonAPI.getNowSeason();
@@ -32,6 +45,22 @@ public class ShopForm {
         form.send(player);
     }
 
+    public static void sendSeasonBlocksForm(Player player) {
+        Season season = SeasonAPI.getNowSeason();
+        String status = season.getStatus();
+        List<String> blocksName = SeasonUtils.getSeasonBlocksName();
+        List<Integer> price = SeasonUtils.getSeasonBlocksPrice();
+
+        CustomForm form = new CustomForm(TextFormat.colorize("&l&0Mùa &2" + season.getName()));
+
+        form.addElement(TextFormat.colorize("&l&fCác nông sản có thể phát triển vào " + status + " &l&f" + season.getName() + "&f:"));
+
+        for (int i = 0; i < blocksName.size(); i++) {
+            form.addElement(TextFormat.colorize("&l&f" + blocksName.get(i) + " &f có thể lên đến &e" + price.get(i) + " &fXu"));
+        }
+        form.send(player);
+    }
+
     private static void confirmForm(Player player, Item item, int price){
         int itcount = Utils.getItemCount(player, item);
         CustomForm form = new CustomForm(TextFormat.colorize("&l&eCửa hàng mùa (" + SeasonAPI.getNowSeason().getName() + ")"));
@@ -42,15 +71,16 @@ public class ShopForm {
         form.addElement("confirm", new Toggle(TextFormat.colorize("&l&aXác nhận bán:")));
         form.setNoneHandler((p) -> sendShopForm(player));
         form.setHandler((p, response) -> {
-            Boolean confirm = response.getToggle("confirm").getValue();
+            boolean confirm = response.getToggle("confirm").getValue();
             String count = response.getInput("amount").getValue();
-            System.out.println(count);
             if(confirm){
                 try{
                     int lastamount = itcount - Integer.parseInt(count);
-                    item.setCount(lastamount);
+                    Item cloneItem = item.clone();
+                    cloneItem.setCount(lastamount);
                     if(lastamount >= 0){
                         p.getInventory().remove(item);
+                        p.getInventory().addItem(cloneItem);
                         EconomyAPI.getInstance().addMoney(p, Integer.parseInt(count) * price);
                         noteForm(player, "&l&fBán thành công vật phẩm nhận được &e" + Integer.parseInt(count) * price + "&f xu");
                         return;

@@ -8,12 +8,12 @@ import me.phuongaz.season.form.ShopForm;
 public class ShopCommand extends Command{
     
     public ShopCommand(){
-        super("sshop", "Season Shop");
+        super("seasonshop", "Season Shop", "/sshop", new String[]{"sshop", "season"});
     }
 
     @Override
     public boolean execute(CommandSender sender, String label, String[] args){
-        if(sender instanceof Player) ShopForm.sendShopForm((Player) sender);
+        if(sender instanceof Player) ShopForm.mainForm((Player) sender);
         return true;
     }
 }

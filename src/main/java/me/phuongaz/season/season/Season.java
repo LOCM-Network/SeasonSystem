@@ -1,7 +1,12 @@
 package me.phuongaz.season.season;
 
 import lombok.Getter;
+import me.phuongaz.season.Loader;
+import me.phuongaz.season.api.SeasonAPI;
 import me.phuongaz.season.utils.Utils;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class Season {
 
@@ -63,5 +68,68 @@ public class Season {
     public boolean isLast(){
         String date = Utils.getDay();
         return (date.equals("Saturday") || date.equals("Sunday"));
+    }
+
+    public String getStatus(){
+        if(isFirstly()){
+            return "&aĐầu&r";
+        }
+        if(isBetween()){
+            return "&eGiữa&r";
+        }
+        if(isLast()){
+            return "&cCuối&r";
+        }
+        return "";
+    }
+
+    public List<String> getSeasonBlocks() {
+        List<String> seasonShop = Loader.getInstance().getConfig().getStringList("shop." + SeasonAPI.getNowSeason().getSeason().toLowerCase());
+        List<String> maxItemsPrice = new ArrayList<>();
+
+        int maxFirstPrice = Integer.MIN_VALUE;
+        int maxSecondPrice = Integer.MIN_VALUE;
+        int maxThirdPrice = Integer.MIN_VALUE;
+
+        for(String i : seasonShop){
+            String[] parts = i.split(":");
+            int first = Integer.parseInt(parts[2]);
+            int second = Integer.parseInt(parts[3]);
+            int third = Integer.parseInt(parts[4]);
+
+            maxFirstPrice = Math.max(maxFirstPrice, first);
+            maxSecondPrice = Math.max(maxSecondPrice, second);
+            maxThirdPrice = Math.max(maxThirdPrice, third);
+        }
+
+        for(String i : seasonShop){
+            String[] parts = i.split(":");
+            int first = Integer.parseInt(parts[2]);
+            int second = Integer.parseInt(parts[3]);
+            int third = Integer.parseInt(parts[4]);
+
+            if(isFirstly() && first == maxFirstPrice){
+                maxItemsPrice.add(parts[0] + ":" + parts[1]);
+            }
+            if(isBetween() && second == maxSecondPrice){
+                maxItemsPrice.add(parts[0] + ":" + parts[1]);
+            }
+            if(isLast() && third == maxThirdPrice){
+                maxItemsPrice.add(parts[0] + ":" + parts[1]);
+            }
+        }
+
+        return maxItemsPrice;
+    }
+
+    public boolean isBlockInSeason(int id) {
+        List<String> seasonShop = getSeasonBlocks();
+        for(String i : seasonShop){
+            String[] parts = i.split(":");
+            if(Integer.parseInt(parts[0]) == id){
+                return true;
+            }
+        }
+        return false;
     }
 }

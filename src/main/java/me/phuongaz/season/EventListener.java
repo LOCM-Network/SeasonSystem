@@ -4,8 +4,11 @@ import java.util.ArrayList;
 import java.util.List;
 
 import cn.nukkit.Player;
+import cn.nukkit.block.Block;
+import cn.nukkit.block.BlockCrops;
 import cn.nukkit.event.EventHandler;
 import cn.nukkit.event.Listener;
+import cn.nukkit.event.block.BlockGrowEvent;
 import cn.nukkit.event.player.PlayerQuitEvent;
 import cn.nukkit.event.server.DataPacketReceiveEvent;
 import cn.nukkit.network.protocol.SetLocalPlayerAsInitializedPacket;
@@ -67,4 +70,18 @@ public class EventListener implements Listener{
         this.players.remove(event.getPlayer().getName());
     }
 
+    @EventHandler
+    public void onGrow(BlockGrowEvent event) {
+        Block block = event.getBlock();
+        if(!block.getLevel().getName().startsWith("skyblock")) {
+            return;
+        }
+        if(block instanceof BlockCrops) {
+            Season season = SeasonAPI.getNowSeason();
+            int blockId = block.getId();
+            if(!season.isBlockInSeason(blockId)) {
+                event.setCancelled();
+            }
+        }
+    }
 }
