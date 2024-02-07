@@ -33,7 +33,7 @@ public class Utils{
     public static int getItemCount(Player player, Item item){
         int count = 0;
         for(Item it : player.getInventory().getContents().values()){
-            if(it.equalsExact(item)){
+            if(item.getId() == it.getId() && item.getDamage() == it.getDamage()){
                 count += it.getCount();
             }
         }

@@ -1,0 +1,33 @@
+version: 2
+holograms:
+  hub:
+    update: -1
+    data:
+    - - §l§eＬＯＣＭ §aＳＫＹＢＬＯＣＫ
+      - §l§fChào mừng bạn đã đến với Đại Gia Đình §eＬＯＣＭ!!!
+      - '§l§fGroup: §b§olocmvn.com/group'
+      - '§lPage: §b§o@locm.mcbe'
+      - '§l§fDiscord: §b§olocmvn.com/discord'
+      - §l§aHãy chơi game vui vẻ nhé §c❤
+      - §l§emc.locmvn.com
+    grid: false
+    grid_normalize: false
+    grid_col_space: 20
+    grid_source: ''
+    grid_header: false
+    column_templates: []
+  example:
+    update: -1
+    data:
+    - - Example hologram
+      - Yes, and second line
+      - '!!!'
+    - - Zkusebni hologram
+      - Ano, druhy radek
+      - '!!!'
+    grid: false
+    grid_normalize: false
+    grid_col_space: 20
+    grid_source: ''
+    grid_header: false
+    column_templates: []

@@ -2,6 +2,7 @@ package me.phuongaz.season;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 
 import cn.nukkit.Player;
 import cn.nukkit.block.Block;
@@ -73,14 +74,17 @@ public class EventListener implements Listener{
     @EventHandler
     public void onGrow(BlockGrowEvent event) {
         Block block = event.getBlock();
-        if(!block.getLevel().getName().startsWith("skyblock")) {
+        if(!block.getLevel().getName().contains("skyblock")) {
             return;
         }
         if(block instanceof BlockCrops) {
             Season season = SeasonAPI.getNowSeason();
             int blockId = block.getId();
-            if(!season.isBlockInSeason(blockId)) {
-                event.setCancelled();
+            if(!season.isBlockInSeason(blockId, 3)) {
+                Random random = new Random();
+                if(random.nextInt(100) < 40) {
+                    event.setCancelled();
+                }
             }
         }
     }

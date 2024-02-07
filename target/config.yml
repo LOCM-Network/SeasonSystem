@@ -1,0 +1,70 @@
+config-version: 18
+entities:
+  autospawn-ticks: 1000
+  despawn-ticks: 4000
+  worlds-spawning-disabled: hubsb
+autospawn:
+  bat: 0
+  blaze: 2
+  chicken: 1
+  cod: 2
+  cow: 1
+  creeper: 2
+  dolphin: 0
+  donkey: 1
+  enderman: 1
+  ghast: 0
+  husk: 2
+  horse: 1
+  magmacube: 2
+  mooshroom: 2
+  ocelot: 2
+  parrot: 1
+  pig: 1
+  polarbear: 2
+  pufferfish: 0
+  rabbit: 1
+  salmon: 3
+  sheep: 2
+  skeleton: 3
+  slime: 1
+  spider: 2
+  squid: 0
+  stray: 2
+  tropicalfish: 2
+  turtle: 0
+  witch: 1
+  witherskeleton: 3
+  wolf: 0
+  zombie: 7
+  zombiepigman: 3
+  fox: 2
+  panda: 0
+  drowned: 0
+  llama: 0
+  strider: 0
+  hoglin: 0
+  piglin: 0
+other:
+  spawner-spawn-range: 8
+  do-not-waste-spawn-eggs: false
+  use-no-xp-orbs: false
+  spawn-no-spawning-area: -1
+  kill-mobs-on-despawn: false
+  spawners-enabled: false
+  end-enderman-spawning: 10
+  allow-breeding: true
+  show-boss-bar: true
+  worlds-entity-creation-disabled: exampledworld1, exampleworld2
+  creeper-explode-blocks: true
+  check-tamed-entity-attack: true
+spawners:
+  enabled: true
+  spawn-range: 4
+  minimum-spawn-count: 1
+  maximum-spawn-count: 4
+  minimum-delay: 200
+  maximum-delay: 5000
+  maximum-nearby-entities: 16
+  required-player-range: 16
+  do-not-waste-spawn-eggs: false

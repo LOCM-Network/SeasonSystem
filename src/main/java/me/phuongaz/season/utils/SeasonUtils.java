@@ -1,6 +1,6 @@
 package me.phuongaz.season.utils;
 
-import cn.nukkit.block.Block;
+import cn.nukkit.item.Item;
 import me.phuongaz.season.api.SeasonAPI;
 import me.phuongaz.season.season.Season;
 
@@ -12,13 +12,14 @@ public class SeasonUtils {
     public static List<String> getSeasonBlocksName() {
         Season season = SeasonAPI.getNowSeason();
 
-        List<String> blocks = season.getSeasonBlocks();
+        List<String> blocks = season.getTopItems(3);
 
         List<String> blockNames = new ArrayList<>();
 
         for (String block : blocks) {
             String[] blockData = block.split(":");
-            blockNames.add(Block.get(Integer.parseInt(blockData[0])).getName());
+            System.out.println(blockData[0]);
+            blockNames.add(Item.get(Integer.parseInt(blockData[0])).getName());
         }
         return blockNames;
     }
@@ -26,7 +27,7 @@ public class SeasonUtils {
     public static List<Integer> getSeasonBlocksPrice() {
         Season season = SeasonAPI.getNowSeason();
 
-        List<String> blocks = season.getSeasonBlocks();
+        List<String> blocks = season.getTopItems(3);
 
         List<Integer> blockPrices = new ArrayList<>();
 

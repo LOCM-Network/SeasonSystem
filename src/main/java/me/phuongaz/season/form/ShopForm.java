@@ -1,6 +1,7 @@
 package me.phuongaz.season.form;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 import cn.nukkit.Player;
@@ -20,7 +21,7 @@ public class ShopForm {
 
     public static void mainForm(Player player){
         SimpleForm form = new SimpleForm(TextFormat.colorize("&l&0Cửa hàng"));
-        form.addButton(TextFormat.colorize("&l&f● &2Mua vật phẩm &l&f●"), (p, btn) -> {
+        form.addButton(TextFormat.colorize("&l&f● &2Bán nông sản &l&f●"), (p, btn) -> {
             sendShopForm(p);
         });
         form.addButton(TextFormat.colorize("&l&f● &2Thông tin mùa &l&f●"), (p, btn) -> {
@@ -49,15 +50,14 @@ public class ShopForm {
         Season season = SeasonAPI.getNowSeason();
         String status = season.getStatus();
         List<String> blocksName = SeasonUtils.getSeasonBlocksName();
-        List<Integer> price = SeasonUtils.getSeasonBlocksPrice();
+        CustomForm form = new CustomForm(TextFormat.colorize("&l&0&2" + season.getName()));
 
-        CustomForm form = new CustomForm(TextFormat.colorize("&l&0Mùa &2" + season.getName()));
-
-        form.addElement(TextFormat.colorize("&l&fCác nông sản có thể phát triển vào " + status + " &l&f" + season.getName() + "&f:"));
-
-        for (int i = 0; i < blocksName.size(); i++) {
-            form.addElement(TextFormat.colorize("&l&f" + blocksName.get(i) + " &f có thể lên đến &e" + price.get(i) + " &fXu"));
+        form.addElement(TextFormat.colorize("&l&fCác nông sản có thể phát triển tốt vào " + status + " &l&f" + season.getName() + "&f:"));
+        for(String i : blocksName){
+            form.addElement(TextFormat.colorize("&l&f● &2" + i));
         }
+
+        form.addElement(TextFormat.colorize("&l&cCác loại nông sản còn lại sẽ phát triển chậm hơn!"));
         form.send(player);
     }
 
