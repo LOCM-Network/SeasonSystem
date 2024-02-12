@@ -47,31 +47,40 @@ public class Utils{
         Season season = SeasonAPI.getNowSeason();
         List<String> setupshop = config.getStringList("shop." + season.getSeason().toLowerCase());
         List<String> seasonshop = new ArrayList<>();
-        System.out.println(setupshop);
-        System.out.println(season.getSeason());
         for(String s : setupshop){
             String[] list = s.split(":");
             int price1 = 0;
             if(season.isFirstly()){
-                price1 = rd.nextInt(Integer.parseInt(list[2]) + price);
+                price1 = randomPrice(Integer.parseInt(list[2]), price);
             }
             if(season.isBetween()){
-                price1 = rd.nextInt(Integer.parseInt(list[3]) + price);
+                price1 = randomPrice(Integer.parseInt(list[3]), price);
             }
             if(season.isLast()){
-                price1 = rd.nextInt(Integer.parseInt(list[4]) + price);
+                price1 = randomPrice(Integer.parseInt(list[4]), price);
             }
             String item = list[0];
             item += ":" + list[1];
             item += ":" + price1;
             seasonshop.add(item);
-            System.out.println(item);
         }
-        System.out.println(seasonshop);
         config.set("season.shop", seasonshop);
         config.save();
         config.reload();
         Loader.getInstance().reloadConfig();
+    }
+
+    public static int randomPrice(int fixed, int oscillation){
+        Random rd = new Random();
+        int randomCalculation = rd.nextInt(2);
+        int price = 0;
+        if(randomCalculation == 0){
+            price = fixed + rd.nextInt(oscillation);
+        }
+        if(randomCalculation == 1){
+            price = fixed - rd.nextInt(oscillation);
+        }
+        return price;
     }
 
     public static void runSeason(){
@@ -84,13 +93,13 @@ public class Utils{
                 String date = dtf.format(now);
                 if(day.equals("Monday") || day.equals("Wednesday") || day.equals("Saturday")){
                     if(day.equals("Monday") && !date.equals(Loader.getInstance().getConfig().getString("season.date"))){
-                        String season = SeasonAPI.getNowSeason().getNextSeason().getName();
-                        Loader.getInstance().getConfig().set("season.name", season.toLowerCase());
+                        Season season = SeasonAPI.getNowSeason().getNextSeason();
+                        Loader.getInstance().getConfig().set("season.name", season.getSeason().toLowerCase());
                         Loader.getInstance().getConfig().set("season.date", date);
                         Loader.getInstance().getConfig().save();
                         Loader.getInstance().reloadConfig();
                         Loader.getInstance().loadSeason();
-                        String msg2 = "&l&eNEW &fĐã chuyển sang mùa &6" + season;
+                        String msg2 = "&l&eNEW &fĐã chuyển sang mùa &6" + season.getName();
                         Server.getInstance().broadcastMessage(TextFormat.colorize(msg2));
                     }                    
                     reloadShop();

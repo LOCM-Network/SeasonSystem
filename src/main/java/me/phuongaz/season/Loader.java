@@ -31,6 +31,11 @@ public class Loader extends PluginBase{
     public void loadSeason(){
         String season = getConfig().getString("season.name");
         this.season = new Season(season);
+
+        int length = getConfig().getStringList("season.shop").size();
+        if(length == 0){
+            Utils.reloadShop();
+        }
     }
 
     public Season getSeason(){

@@ -8,9 +8,6 @@ import me.phuongaz.season.utils.Utils;
 import java.util.ArrayList;
 import java.util.List;
 
-import java.util.Collections;
-import java.util.Comparator;
-
 public class Season {
 
     enum Seasons{
@@ -31,7 +28,7 @@ public class Season {
     }
 
     @Getter
-    private String season;
+    private final String season;
 
     public Season(String season){
         this.season = season;
